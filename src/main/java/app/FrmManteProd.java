@@ -143,9 +143,32 @@ public class FrmManteProd extends JFrame {
 		cboProveedores.setBounds(310, 106, 86, 22);
 		contentPane.add(cboProveedores);
 		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buscarProducto();
+			}
+		});
+		btnBuscar.setBounds(324, 54, 89, 23);
+		contentPane.add(btnBuscar);
+		
 		llenaCombo();
 	}
 
+	void buscarProducto() {
+		EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("mysql");
+		EntityManager em = fabrica.createEntityManager();
+		
+		Producto p = em.find(Producto.class, txtCódigo.getText()); 
+
+		if (p == null)
+			txtSalida.setText("Código no existe...!");
+		else {
+			txtDescripcion.setText(p.getDes_prod());
+		}
+		em.close();
+	}
+	
 	void llenaCombo() {
 		EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("mysql");
 		EntityManager em = fabrica.createEntityManager();
